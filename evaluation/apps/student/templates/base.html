@@ -6,10 +6,32 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 </head>
 <body>
-<form method="POST" class="student-form">
-    {% csrf_token %}
-    {% form %}
-    <button type="submit" class="btn btn-default">Submit</button>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="POST" class="student-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    {% if student_data %}
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table">
+                    {% for student in student_data %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.standard }}</td>
+                        <td>{{ student.marks }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>
 </body>
 </html>
