@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.core.exceptions import ValidationError
+from django.urls import reverse
 from .forms import StudentForm
 from .models import Student
 
@@ -14,6 +14,6 @@ def add_student(request):
         form = StudentForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect('/addstudent/?new')
+            redirect(reverse('student:add_student'))
 
     return render(request, 'base.html', {'form': form, 'student_data': student_data})
