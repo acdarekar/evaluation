@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
 from django.urls import reverse
 from .forms import StudentForm
 from .models import Student
@@ -17,3 +18,9 @@ def add_student(request):
             redirect(reverse('student:add_student'))
 
     return render(request, 'base.html', {'form': form, 'student_data': student_data})
+
+
+class CreateStudent(CreateView):
+    template_name = 'base.html'
+    model = Student
+    fields = ('name', 'standard', 'marks')
