@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.views import View
+from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, FormView
 from django.urls import reverse, reverse_lazy
 from .forms import StudentForm, AltStudentForm
@@ -35,3 +37,25 @@ class InsertStudent(FormView):
     def form_valid(self, form):
         form.save_student()
         return super(InsertStudent, self).form_valid(form)
+
+
+class PutStudent(View):
+    student_data = Student.objects.all()
+    form_class = StudentForm
+    # form pre-population
+    initial = {'marks': '52'}
+    template_name = 'base.html'
+
+    def get(self, request, *args, **kwargs):
+        student_data = Student.objects.all()
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form, 'student_data': student_data})
+
+    def post(self, request, *args, **kwargs):
+        student_data = Student.objects.all()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('student:put_student'))
+
+        return render(request, self.template_name, {'form': form, 'student_data': student_data})
