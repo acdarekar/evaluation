@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
-from django.urls import reverse
-from .forms import StudentForm
+from django.views.generic.edit import CreateView, FormView
+from django.urls import reverse, reverse_lazy
+from .forms import StudentForm, AltStudentForm
 from .models import Student
 
 # Create your views here.
@@ -24,3 +24,14 @@ class CreateStudent(CreateView):
     template_name = 'base.html'
     model = Student
     fields = ('name', 'standard', 'marks')
+
+
+class InsertStudent(FormView):
+    template_name = 'base.html'
+    form_class = AltStudentForm
+    # success_url = '/insertstudent'
+    success_url = reverse_lazy('student:insert_student')
+
+    def form_valid(self, form):
+        form.save_student()
+        return super(InsertStudent, self).form_valid(form)
