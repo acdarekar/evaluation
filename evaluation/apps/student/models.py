@@ -7,7 +7,7 @@ class Student(models.Model):
     """Base Class for Model"""
     name = models.CharField(max_length=99)
     standard = models.CharField(max_length=10)
-    marks = models.CharField(max_length=10)
+    marks = models.IntegerField()
 
     class Meta:
         verbose_name = "Student"
